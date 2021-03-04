@@ -40,6 +40,12 @@ void test_stack_pushed_twice_and_popped_once_is_not_empty(DynamicStack_t* new_st
 	assert(dyn_stack_is_empty(new_stack) == false);
 }
 
+void test_new_stack_when_popped_raises_status_flag(DynamicStack_t* new_stack)
+{
+	dyn_stack_pop(new_stack);
+	assert(dyn_stack_status() & DYN_STACK_UNDERFLOW);
+}
+
 void run_tests()
 {
 	DynamicStack_t* stack = NULL;
@@ -49,6 +55,7 @@ void run_tests()
 			test_stack_pushed_once_is_not_empty,
 			test_stack_pushed_and_popped_once_is_empty,
 			test_stack_pushed_twice_and_popped_once_is_not_empty,
+			test_new_stack_when_popped_raises_status_flag,
 	};
 
 	for (int i = 0; i < sizeof test_functions / sizeof *test_functions; ++i)

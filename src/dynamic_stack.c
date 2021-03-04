@@ -34,3 +34,10 @@ void dyn_stack_pop(DynamicStack_t* stack)
 {
 	stack->item_count--;
 }
+
+const unsigned DYN_STACK_UNDERFLOW = 1;
+
+unsigned dyn_stack_status(void)
+{
+	return 1;
+}
