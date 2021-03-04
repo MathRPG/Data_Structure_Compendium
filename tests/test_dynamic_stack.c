@@ -5,6 +5,8 @@
 
 #include "dynamic_stack.h"
 
+typedef void (* stack_test_function)(DynamicStack_t*);
+
 int test_status_flag;
 int TEST_FAILURE = 0;
 int TEST_SUCCESS = 1;
@@ -44,44 +46,45 @@ void set_up_tests()
 	atexit(show_test_status);
 }
 
-void test_new_stack_properties()
+void test_new_stack_properties(struct DynamicStack_s* new_stack)
 {
-	struct DynamicStack_s* new_stack = dyn_stack_new(sizeof(int));
-
 	assert(new_stack != NULL);
 	assert(dyn_stack_is_empty(new_stack));
-
-	dyn_stack_delete(new_stack);
 }
 
-void test_one_element_stack_is_not_empty()
+void test_one_element_stack_is_not_empty(DynamicStack_t* new_stack)
 {
-	DynamicStack_t* one_element_stack = dyn_stack_new(sizeof(int));
-	dyn_stack_push(one_element_stack, &(int[]){ 5 });
+	dyn_stack_push(new_stack, &(int[]){ 5 });
 
-	assert(dyn_stack_is_empty(one_element_stack) == false);
+	assert(dyn_stack_is_empty(new_stack) == false);
 
-	dyn_stack_delete(one_element_stack);
 }
 
-void test_zero_element_stack_is_empty()
+void test_zero_element_stack_is_empty(DynamicStack_t* new_stack)
 {
-	DynamicStack_t* zero_element_stack = dyn_stack_new(sizeof(int));
+	dyn_stack_push(new_stack, &(int[]){ 0 });
+	dyn_stack_pop(new_stack);
 
-	dyn_stack_push(zero_element_stack, &(int[]){ 0 });
-	dyn_stack_pop(zero_element_stack);
-
-	assert(dyn_stack_is_empty(zero_element_stack));
-
-	dyn_stack_delete(zero_element_stack);
+	assert(dyn_stack_is_empty(new_stack));
 }
 
 void run_tests()
 {
-	test_new_stack_properties();
-	test_one_element_stack_is_not_empty();
-	test_zero_element_stack_is_empty();
+	DynamicStack_t* stack = NULL;
+	stack_test_function test_functions[] = {
+			test_new_stack_properties,
+			test_one_element_stack_is_not_empty,
+			test_zero_element_stack_is_empty
+	};
 
+	for (int i = 0; i < 3; ++i)
+	{
+		stack = dyn_stack_new(sizeof(int));
+
+		test_functions[i](stack);
+
+		dyn_stack_delete(stack);
+	}
 }
 
 void run_tests_and_query_results()
