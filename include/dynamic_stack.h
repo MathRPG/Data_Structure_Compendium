@@ -5,7 +5,9 @@ typedef struct DynamicStack_s DynamicStack_t;
 
 DynamicStack_t* dyn_stack_new(size_t item_size);
 void dyn_stack_delete(DynamicStack_t* stack);
-bool dyn_stack_is_empty(DynamicStack_t* pS);
+bool dyn_stack_is_empty(DynamicStack_t* stack);
+void dyn_stack_push(DynamicStack_t* stack, void* p);
+void dyn_stack_pop(DynamicStack_t* stack);
 
 
 #include <stdlib.h>

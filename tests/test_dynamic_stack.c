@@ -54,9 +54,34 @@ void test_new_stack_properties()
 	dyn_stack_delete(new_stack);
 }
 
+void test_one_element_stack_is_not_empty()
+{
+	DynamicStack_t* one_element_stack = dyn_stack_new(sizeof(int));
+	dyn_stack_push(one_element_stack, &(int[]){ 5 });
+
+	assert(dyn_stack_is_empty(one_element_stack) == false);
+
+	dyn_stack_delete(one_element_stack);
+}
+
+void test_zero_element_stack_is_empty()
+{
+	DynamicStack_t* zero_element_stack = dyn_stack_new(sizeof(int));
+
+	dyn_stack_push(zero_element_stack, &(int[]){ 0 });
+	dyn_stack_pop(zero_element_stack);
+
+	assert(dyn_stack_is_empty(zero_element_stack));
+
+	dyn_stack_delete(zero_element_stack);
+}
+
 void run_tests()
 {
 	test_new_stack_properties();
+	test_one_element_stack_is_not_empty();
+	test_zero_element_stack_is_empty();
+
 }
 
 void run_tests_and_query_results()
