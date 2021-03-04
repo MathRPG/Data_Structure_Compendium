@@ -23,6 +23,7 @@ void set_color(FILE* out, int color)
 	else
 		fprintf(out, "\033[0m");
 }
+
 void show_test_status()
 {
 	if (test_status_flag == TEST_FAILURE)
@@ -36,6 +37,12 @@ void show_test_status()
 		printf("✔ Tests passed!");
 	}
 	set_color(stdout, COLOR_RESET);
+}
+
+void set_up_tests()
+{
+	test_status_flag = TEST_FAILURE;
+	atexit(show_test_status);
 }
 
 #endif //DATA_STRUCTURES_TESTING_H
