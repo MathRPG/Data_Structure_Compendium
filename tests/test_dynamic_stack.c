@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdbool.h>
+
 #include "dynamic_stack.h"
 
 int test_status_flag;
@@ -42,20 +44,19 @@ void set_up_tests()
 	atexit(show_test_status);
 }
 
-void test_new_stack_is_not_null()
+void test_new_stack_properties()
 {
-	struct DynamicStack_s* stack = dyn_stack_new(sizeof(int));
+	struct DynamicStack_s* new_stack = dyn_stack_new(sizeof(int));
 
-	assert(stack != NULL);
+	assert(new_stack != NULL);
+	assert(dyn_stack_is_empty(new_stack));
 
-	dyn_stack_delete(stack);
+	dyn_stack_delete(new_stack);
 }
 
 void run_tests()
 {
-	test_new_stack_is_not_null();
-
-
+	test_new_stack_properties();
 }
 
 void run_tests_and_query_results()
