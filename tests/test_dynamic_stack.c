@@ -36,6 +36,17 @@ void test_stack_pushed_once(DynamicStack_t* stack)
 	assert(*peeked == value);
 }
 
+void test_stack_pushed_twice(DynamicStack_t* stack)
+{
+	const int first_value = 1;
+	const int second_value = 2;
+	dyn_stack_push(stack, TEMP_PTR(int, first_value));
+	dyn_stack_push(stack, TEMP_PTR(int, second_value));
+
+	const int* peeked = (int*)dyn_stack_peek(stack);
+	assert(*peeked == second_value);
+}
+
 void test_stack_pushed_and_popped_once(DynamicStack_t* stack)
 {
 	dyn_stack_push(stack, TEMP_PTR(int, 0));
@@ -43,6 +54,7 @@ void test_stack_pushed_and_popped_once(DynamicStack_t* stack)
 
 	assert(dyn_stack_is_empty(stack));
 	assert((dyn_stack_status() & DYN_STACK_UNDERFLOW) == false);
+	assert(dyn_stack_peek(stack) == NULL);
 }
 
 void test_stack_pushed_twice_and_popped_once(DynamicStack_t* new_stack)
@@ -61,6 +73,7 @@ void run_tests()
 	stack_test_function_t test_functions[] = {
 			test_new_stack,
 			test_stack_pushed_once,
+			test_stack_pushed_twice,
 			test_stack_pushed_and_popped_once,
 			test_stack_pushed_twice_and_popped_once,
 	};

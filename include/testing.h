@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 int test_status_flag;
-int TEST_FAILURE = 0;
-int TEST_SUCCESS = 1;
+const int TEST_FAILURE = 0;
+const int TEST_SUCCESS = 1;
 
 void show_test_status()
 {
