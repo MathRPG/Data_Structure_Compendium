@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "dynamic_stack.h"
 #include "node.h"
@@ -23,6 +22,7 @@ DynamicStack_t* dyn_stack_new(const size_t item_size)
 
 void dyn_stack_delete(DynamicStack_t* const stack)
 {
+	// TODO: Can be optimized
 	while (!dyn_stack_is_empty(stack))
 		dyn_stack_pop(stack);
 	free(stack);
@@ -33,16 +33,26 @@ bool dyn_stack_is_empty(const DynamicStack_t* const stack)
 	return stack->node == NULL;
 }
 
+const void* dyn_stack_peek(const DynamicStack_t* const stack)
+{
+	return dyn_stack_is_empty(stack) ? NULL : node_data(stack->node);
+}
+
+unsigned DYN_STATUS_FLAG = 0;
+
+const unsigned DYN_STACK_UNDERFLOW = 1;
+
+unsigned dyn_stack_status(void)
+{
+	return DYN_STATUS_FLAG;
+}
+
 void dyn_stack_push(DynamicStack_t* const stack, const void* const p)
 {
 	Node_t* old = stack->node;
 	stack->node = node_new(p, stack->item_size);
 	*node_next(stack->node) = old;
 }
-
-unsigned DYN_STATUS_FLAG = 0;
-
-const unsigned DYN_STACK_UNDERFLOW = 1;
 
 void dyn_stack_pop(DynamicStack_t* const stack)
 {
@@ -56,17 +66,4 @@ void dyn_stack_pop(DynamicStack_t* const stack)
 		node_delete(stack->node);
 		stack->node = next_node;
 	}
-}
-
-unsigned dyn_stack_status(void)
-{
-	return DYN_STATUS_FLAG;
-}
-
-const void* dyn_stack_peek(const DynamicStack_t* const stack)
-{
-	if (dyn_stack_is_empty(stack))
-		return NULL;
-	else
-		return node_data(stack->node);
 }

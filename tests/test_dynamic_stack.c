@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdbool.h>
-#include <testing.h>
 
 #include "dynamic_stack.h"
 #include "testing.h"
