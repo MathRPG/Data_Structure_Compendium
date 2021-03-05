@@ -43,6 +43,14 @@ void test_stack_pushed_and_popped_once_is_empty(DynamicStack_t* new_stack)
 	assert(dyn_stack_is_empty(new_stack));
 }
 
+void test_stack_pushed_before_popped_does_not_raise_underflow_flag(DynamicStack_t* stack)
+{
+	dyn_stack_push(stack, TEMP_PTR(int, 2));
+	dyn_stack_pop(stack);
+
+	assert((dyn_stack_status() & DYN_STACK_UNDERFLOW) == false);
+}
+
 void test_stack_pushed_twice_and_popped_once_is_not_empty(DynamicStack_t* new_stack)
 {
 	dyn_stack_push(new_stack, TEMP_PTR(int, 0));
@@ -62,6 +70,7 @@ void run_tests()
 			test_new_stack_when_peeked_returns_null_pointer,
 			test_stack_pushed_once_is_not_empty,
 			test_stack_pushed_and_popped_once_is_empty,
+			test_stack_pushed_before_popped_does_not_raise_underflow_flag,
 			test_stack_pushed_twice_and_popped_once_is_not_empty,
 	};
 

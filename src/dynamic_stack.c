@@ -30,16 +30,21 @@ void dyn_stack_push(DynamicStack_t* const stack, const void* const p)
 	stack->item_count++;
 }
 
-void dyn_stack_pop(DynamicStack_t* const stack)
-{
-	stack->item_count--;
-}
+unsigned DYN_STATUS_FLAG = 0;
 
 const unsigned DYN_STACK_UNDERFLOW = 1;
 
+void dyn_stack_pop(DynamicStack_t* const stack)
+{
+	DYN_STATUS_FLAG &= ~DYN_STACK_UNDERFLOW;
+	if (dyn_stack_is_empty(stack))
+		DYN_STATUS_FLAG |= DYN_STACK_UNDERFLOW;
+	stack->item_count--;
+}
+
 unsigned dyn_stack_status(void)
 {
-	return 1;
+	return DYN_STATUS_FLAG;
 }
 
 const void* dyn_stack_peek(const DynamicStack_t* const stack)
