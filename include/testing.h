@@ -1,7 +1,3 @@
-//
-// Created by Usuario on 03/04/21.
-//
-
 #ifndef DATA_STRUCTURES_TESTING_H
 #define DATA_STRUCTURES_TESTING_H
 
