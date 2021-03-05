@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <testing.h>
 
 #include "dynamic_stack.h"
 #include "testing.h"
@@ -70,11 +71,7 @@ void run_tests()
 		test_functions[i](stack);
 		dyn_stack_delete(stack);
 	}
-}
 
-void run_tests_and_query_results()
-{
-	run_tests();
 	test_status_flag = TEST_SUCCESS;
 }
 
@@ -83,7 +80,7 @@ int main(void)
 	printf("Hello, world!\n");
 
 	set_up_tests();
-	run_tests_and_query_results();
+	run_tests();
 
 	return EXIT_SUCCESS;
 }
