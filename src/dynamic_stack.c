@@ -3,44 +3,31 @@
 #include <string.h>
 
 #include "dynamic_stack.h"
-
-typedef struct Node_s Node_t;
-
-struct Node_s
-{
-	void* data;
-};
+#include "node.h"
 
 struct DynamicStack_s
 {
 	unsigned item_count;
 	size_t item_size;
-	Node_t* element;
+	struct Node_s* node;
 };
 
-Node_t* node_new(const void* data, size_t size);
-
-void node_delete(Node_t* pS);
 DynamicStack_t* dyn_stack_new(const size_t item_size)
 {
 	DynamicStack_t* new_stack = malloc(sizeof(*new_stack));
-	new_stack->item_count = 0u;
-	new_stack->item_size = item_size;
-	new_stack->element = NULL;
+	*new_stack = (struct DynamicStack_s){
+			.item_size = item_size,
+			.item_count = 0,
+			.node = NULL
+	};
 	return new_stack;
 }
 
 void dyn_stack_delete(DynamicStack_t* const stack)
 {
-	if (stack->element != NULL)
-		node_delete(stack->element);
+	if (stack->node != NULL)
+		node_delete(stack->node);
 	free(stack);
-}
-
-void node_delete(Node_t* pS)
-{
-	free(pS->data);
-	free(pS);
 }
 
 bool dyn_stack_is_empty(const DynamicStack_t* const stack)
@@ -51,17 +38,9 @@ bool dyn_stack_is_empty(const DynamicStack_t* const stack)
 void dyn_stack_push(DynamicStack_t* const stack, const void* const p)
 {
 	stack->item_count++;
-	if (stack->element != NULL)
-		node_delete(stack->element);
-	stack->element = node_new(p, stack->item_size);
-}
-
-Node_t* node_new(const void* data, size_t size)
-{
-	Node_t * new_node = malloc(sizeof(*new_node));
-	new_node->data = malloc(size);
-	memcpy(new_node->data, data, size);
-	return new_node;
+	if (stack->node != NULL)
+		node_delete(stack->node);
+	stack->node = node_new(p, stack->item_size);
 }
 
 unsigned DYN_STATUS_FLAG = 0;
@@ -84,7 +63,7 @@ unsigned dyn_stack_status(void)
 
 const void* dyn_stack_peek(const DynamicStack_t* const stack)
 {
-	if (stack->element == NULL)
+	if (stack->node == NULL)
 		return NULL;
-	return stack->element->data;
+	return node_get_data(stack->node);
 }
