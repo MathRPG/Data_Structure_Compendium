@@ -58,11 +58,17 @@ void test_stack_pushed_and_popped_once(DynamicStack_t* stack)
 
 void test_stack_pushed_twice_and_popped_once(DynamicStack_t* new_stack)
 {
-	dyn_stack_push(new_stack, TEMP_PTR(int, 0));
-	dyn_stack_push(new_stack, TEMP_PTR(int, 0));
+	const int first_value = 1;
+	const int second_value = 2;
+	dyn_stack_push(new_stack, TEMP_PTR(int, first_value));
+	dyn_stack_push(new_stack, TEMP_PTR(int, second_value));
 	dyn_stack_pop(new_stack);
 
 	assert(dyn_stack_is_empty(new_stack) == false);
+	assert((dyn_stack_status() & DYN_STACK_UNDERFLOW) == false);
+
+	const int* peeked = (int*)dyn_stack_peek(new_stack);
+	assert(*peeked == first_value);
 }
 
 void run_tests()
