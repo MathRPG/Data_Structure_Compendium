@@ -89,8 +89,6 @@ void run_tests()
 		test_functions[i](stack);
 		dyn_stack_delete(stack);
 	}
-
-	test_status_flag = TEST_SUCCESS;
 }
 
 int main(void)
@@ -99,6 +97,7 @@ int main(void)
 
 	set_up_tests();
 	run_tests();
+	test_status_flag = TEST_SUCCESS;
 
 	return EXIT_SUCCESS;
 }
